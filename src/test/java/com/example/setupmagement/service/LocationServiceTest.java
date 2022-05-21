@@ -25,7 +25,11 @@ public class LocationServiceTest {
 
     @BeforeEach
     private void init() {
-        this.testLocation = LocationDTO.builder().name("test location").build();
+        this.testLocation = LocationDTO.builder()
+                .name("test location")
+                .latitude(-1D)
+                .longitude(1D)
+                .build();
     }
 
     @Test
@@ -50,5 +54,18 @@ public class LocationServiceTest {
         assertThat(allLocations)
                 .filteredOn(locationDTO -> locationDTO.getName().equals("test location"))
                 .isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("get location by id")
+    @Transactional
+    public void givenLocation_whenGetId_thenReturnLocation() {
+        LocationDTO saveLocation = locationService.saveLocation(testLocation);
+
+        LocationDTO foundLocation = locationService.getLocationById(saveLocation.getId());
+
+        assertThat(foundLocation).isNotNull();
+        assertThat(foundLocation).isEqualTo(saveLocation);
+        assertThat(foundLocation.getName()).isEqualTo(saveLocation.getName());
     }
 }

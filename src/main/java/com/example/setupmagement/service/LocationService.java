@@ -34,4 +34,9 @@ public class LocationService {
     public List<LocationDTO> getAllLocations() {
         return locationMapper.toDto(locationRepository.findAll());
     }
+
+    public LocationDTO getLocationById(Long id) {
+        Location location = locationRepository.getById(id);
+        return locationMapper.toDto(location);
+    }
 }
